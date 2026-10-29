@@ -1,7 +1,19 @@
 import urllib.request
 import json
+import sys
 
-URL = "https://api.github.com/users/ademadem05/events"
+
+if len(sys.argv) < 2:
+    print("Error: please provide a GitHub username")
+    print("Usage: python github_activity.py <username>")
+    print("Example: python github_activity.py kamranahmedse")
+    sys.exit()
+
+user_name = sys.argv[1]
+URL = f"https://api.github.com/users/{user_name}/events"
+
+    
+
 with urllib.request.urlopen(URL) as response:
     raw = response.read()
 
@@ -13,9 +25,8 @@ text = raw.decode("utf-8")
 events = json.loads(text)
 
 
-# print(events["type"]["payload"])
+
 for event in events:
-    # print(f"{event["repo"]["name"]}, {event["type"]}, {event["created_at"]}")
     if event["type"] == "PushEvent":
         print(f"- Pushed to {event["repo"]["name"]}")
 
