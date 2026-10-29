@@ -34,22 +34,24 @@ text = raw.decode("utf-8")
 events = json.loads(text)
 
 
+if events == []:
+    print(f"No recent activity found for {events["repo"]["name"]}")
+else:
+    for event in events:
+        if event["type"] == "PushEvent":
+            print(f"- Pushed to {event["repo"]["name"]}")
 
-for event in events:
-    if event["type"] == "PushEvent":
-        print(f"- Pushed to {event["repo"]["name"]}")
+        elif event["type"] == "WatchEvent":  
+            print(f"- Starred {event["repo"]["name"]}")
 
-    elif event["type"] == "WatchEvent":  
-        print(f"- Starred {event["repo"]["name"]}")
+        elif event["type"] == "CreateEvent":  
+            print(f"- Created {event["repo"]["name"]}")    
 
-    elif event["type"] == "CreateEvent":  
-        print(f"- Created {event["repo"]["name"]}")    
+        elif event["type"] == "IssuesEvent":  
+            print(f"- Opened an issue in {event["repo"]["name"]}")
 
-    elif event["type"] == "IssuesEvent":  
-        print(f"- Opened an issue in {event["repo"]["name"]}")
-
-    elif event["type"] == "ForkEvent":  
-        print(f"- Forked {event["repo"]["name"]}") 
-    else:
-        print(f"- {event["type"]} in {event["repo"]["name"]}")
-    
+        elif event["type"] == "ForkEvent":  
+            print(f"- Forked {event["repo"]["name"]}") 
+        else:
+            print(f"- {event["type"]} in {event["repo"]["name"]}")
+        
