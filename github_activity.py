@@ -35,7 +35,7 @@ events = json.loads(text)
 
 
 if events == []:
-    print(f"No recent activity found for {events["repo"]["name"]}")
+    print(f"No recent activity found for {user_name}")
 else:
     for event in events:
         if event["type"] == "PushEvent":
