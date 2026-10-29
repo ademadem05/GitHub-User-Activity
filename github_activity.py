@@ -1,6 +1,8 @@
 import urllib.request
 import json
 import sys
+from urllib.error import HTTPError, URLError
+
 
 
 if len(sys.argv) < 2:
@@ -13,11 +15,18 @@ user_name = sys.argv[1]
 URL = f"https://api.github.com/users/{user_name}/events"
 
     
-
-with urllib.request.urlopen(URL) as response:
-    raw = response.read()
-
-# print(type(raw))
+try:
+    with urllib.request.urlopen(URL) as response:
+        raw = response.read()
+except HTTPError as e:
+    if e.code == 404:
+        print(f"Error: user '{user_name}' not found")
+    else:
+        print(f"Error: GitHub API returned an error (code {e.code})")
+    sys.exit()
+except URLError:
+    print("Error: could not connect to GitHub. Check your internet connection.")
+    sys.exit()
 
 text = raw.decode("utf-8")
 # print(type(text))
